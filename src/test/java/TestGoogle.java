@@ -18,7 +18,12 @@ public class TestGoogle
 {
     private WebDriver driver;
     private String findSentance;
-    //driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+    /*
+    1.  открыть гугл
+    2.  послать запрос
+    3.  проверить на странице чтобы в каждом ответе было искомое слово(исключения реклама картинк карты и тд)
+    */
+
 
     @Before
     public void before()
@@ -30,7 +35,8 @@ public class TestGoogle
         findSentance="Байк";
     }
     @Test
-    public void test() throws InterruptedException {
+    public void test()
+    {
 
         //вводим в строку поиска запрос
         WebElement findField = driver.findElement(By.cssSelector("div#gs_lc0 input#lst-ib.gsfi"));
