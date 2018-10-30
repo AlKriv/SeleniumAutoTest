@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
+import static org.junit.Assert.assertEquals;
 
 /*
 1.  логинимся в почту
@@ -25,6 +26,7 @@ public class TestEmailSend
     private String mail;
     private String pass;
     private String subj;
+    private String bodyMail;
 
 
     @Before
@@ -34,6 +36,7 @@ public class TestEmailSend
         mail="SelForTest@gmail.com";
         pass="10#@E(3oMU)y";
         subj="Test Selenium Web driver";
+        bodyMail="Test Selenium Web driver Body";
         driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
         driver.get("https://mail.google.com/mail/?tab=wm");
     }
@@ -57,20 +60,39 @@ public class TestEmailSend
         driver.findElement(By.cssSelector("div.T-I.J-J5-Ji.T-I-KE.L3")).click();
         driver.findElement(By.cssSelector(".vO[name='to']")).sendKeys(mail);//кому
         driver.findElement(By.xpath("//input[@name='subjectbox']")).sendKeys(subj);//subject
-        driver.findElement(By.xpath("//div[@aria-label='Тело письма']")).sendKeys(subj);//list
+        driver.findElement(By.xpath("//div[@aria-label='Тело письма']")).sendKeys(bodyMail);//list
         driver.findElement(By.xpath("//table[@role='group']/tbody/tr/td/div/div[2]")).click();//button send
         //check send
-        driver.findElement(By.xpath("//a[@title=\"Отправленные\"]")).click();
-        List<WebElement> tempList = driver.findElements(By.xpath("//table[@id=':mm']/tbody"));
-        for(WebElement el:tempList)
-        {
-            System.out.println(el);
-        }
+        //driver.findElement(By.xpath("//div[@role='navigation']/div/div/div/div/div[4]/div/div/div[2]/span/a")).click();
+        driver.get("https://mail.google.com/mail/u/0/?tab=wm#sent");
+          try {
+            Thread.sleep(5000);
+          } catch (InterruptedException e) {
+              e.printStackTrace();
+          }
+        driver.findElement(By.xpath("//div[@role='main']//tbody/tr")).click();
+          //subject
+        String tempSubj=(driver.findElement(By.xpath("//table[@role='presentation']//h2"))).getText();
+        //mail
+        String tempMail =(driver.findElement(By.xpath("//span[@role='gridcell']/span[2]"))).getText();
+        //body letter
+        String tempLetter = (driver.findElement(By.xpath("//div[@role='gridcell']/div"))).getText();
+
+
+        assertEquals(true,tempMail.contains(mail.toLowerCase())&&tempSubj.contains(subj)&&tempLetter.contains(bodyMail));
+
+
 
     }
     @After
     public void After()
     {
-
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        driver.findElement(By.xpath("//*[@id=\":5\"]/div[3]/div[1]/div/div[2]/div[3]/div")).click();
+//  //*[@id=":5"]/div[3]/div[1]/div/div[2]/div[3]/div/div
     }
 }
