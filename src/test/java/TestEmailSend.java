@@ -110,9 +110,9 @@ public class TestEmailSend
     @After
     public void After()
     {
-
+        //del letter
         driver.findElement(By.xpath("//*[@id=\":5\"]/div[3]/div[1]/div/div[2]/div[3]/div")).click();
-
+        driver.quit();
     }
 
 
